@@ -21,7 +21,7 @@
           <input formControlName="card" value="Visa" type="text" class="form-control" placeholder="Card type" aria-label="Username">
           <span class="input-group-text"><i class="fa-solid fa-angles-right" style="color: #000000;"></i></span>
           <input formControlName="cardid" type="text" class="form-control" placeholder="Last 4 digits..." aria-label="Server">
-          <span class="delete-but mt-1 mx-2 fs-4" (click)="removeCard(i)"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></span>
+          <span class="delete-but mt-1 mx-2 fs-4" *ngIf="cardListArray().length > 1" (click)="removeCard(i)"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></span>
         </div>
         <div *ngIf="cardListArray().at(i).get('card')?.touched && cardListArray().at(i).get('card')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
           * Card type is required
