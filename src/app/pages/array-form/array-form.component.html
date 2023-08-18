@@ -1,0 +1,57 @@
+<form class="w-50 mx-auto arrayform" [formGroup]="arrayForm">
+  <h1 class="text-center my-">ArrayForm Example</h1>
+  <div class="input-group mb-3 mt-4">
+    <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user-large" style="color: #000000;"></i></span>
+    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+  </div>
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Account ID here..." value="932-538875-92" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <span class="input-group-text" id="basic-addon2"> <i class="fa-solid fa-file-invoice" style="color: #000000;"></i></span>
+  </div>
+
+  <h4 class="mt-4 text-center fs-5">List of credit cards to pay</h4>
+  <!-- List of Credit Cards -->
+  <div class="input-group d-flex justify-content-center" formArrayName="cardList">
+
+    <div *ngFor="let card of cardListArray().controls; let i = index">
+      <div [formGroupName]="i" class="my-3 border border-dark px-3">
+        <div class="d-flex mx-1 my-3">
+          <span class="input-group-text"><i class="fa-regular fa-credit-card" style="color: #000000;"></i></span>
+          <input formControlName="card" value="Visa" type="text" class="form-control" placeholder="Card type" aria-label="Username">
+          <span class="input-group-text"><i class="fa-solid fa-angles-right" style="color: #000000;"></i></span>
+          <input formControlName="cardid" type="text" class="form-control" placeholder="Last 4 digits..." aria-label="Server">
+          <span class="delete-but mt-1 mx-2 fs-4" (click)="removeCard(i)"><i class="fa-solid fa-trash-can" style="color: #000000;"></i></span>
+        </div>
+        <div *ngIf="cardListArray().at(i).get('card')?.touched && cardListArray().at(i).get('card')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
+          * Card type is required
+        </div>
+        <div *ngIf="cardListArray().at(i).get('card')?.touched && cardListArray().at(i).get('card')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
+          * The card has entered contains very few characters (min: {{cardListArray().at(i).get('card')?.errors?.['minlength']?.requiredLength}})
+        </div>
+        <div *ngIf="cardListArray().at(i).get('card')?.touched && cardListArray().at(i).get('card')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
+          * The card has entered contains so much characters (max: {{cardListArray().at(i).get('card')?.errors?.['maxlength']?.requiredLength}})
+        </div>
+        <div *ngIf="cardListArray().at(i).get('cardid')?.touched && cardListArray().at(i).get('cardid')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
+          * The last four digits of your card are required
+        </div>
+        <div *ngIf="cardListArray().at(i).get('cardid')?.touched && cardListArray().at(i).get('cardid')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
+          * The digits of your card do not have the minimum allowed (min: {{cardListArray().at(i).get('cardid')?.errors?.['minlength']?.requiredLength}})
+        </div>
+        <div *ngIf="cardListArray().at(i).get('cardid')?.touched && cardListArray().at(i).get('card')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
+          * The digits of your card exceed the maximum allowed (max: {{cardListArray().at(i).get('cardid')?.errors?.['maxlength']?.requiredLength}})
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="d-flex justify-content-center gap-3">
+    <button type="button" class="btn btn-secondary" (click)="AddCardToPay()">Add new payment</button>
+    <button type="button" class="btn btn-primary" (click)="getFormData()" [disabled]="arrayForm.invalid">
+      Submit Payment
+      <span class="mr-1" *ngIf="arrayForm.valid">✔</span>
+      <span class="mr-1" *ngIf="arrayForm.invalid">❌</span>
+    </button>
+  </div>
+</form>
